@@ -2,41 +2,45 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'  // Use the Maven tool configured in Jenkins
+        maven 'Maven'  // Ensure Maven is available in Jenkins
+        jdk 'JDK'         // Ensure JDK 11 is available in Jenkins
+    }
+
+    environment {
+        // Define the path to the JAR file
+        JAR_PATH = 'target/my-maven-app3-1.0-SNAPSHOT.jar'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/Sushpatil12/srctodest.git'
+                // Clone your Git repository
+                git url: 'https://github.com/Vinayak-Rajput/Maven-Src-to-Dest'
+
             }
         }
 
-        stage('Build') {
+        stage('Build JAR') {
             steps {
+                // Use Maven to clean and package the project, creating a JAR file
                 sh 'mvn clean package'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
             }
         }
 
         stage('Run Application') {
             steps {
-                sh 'java -jar target/SrcToDes-1.0-SNAPSHOT.jar'
+                // Run the JAR file using the 'java -jar' command
+                sh 'mvn exec:java -Dexec.mainClass="com.example.App"'
             }
         }
     }
 
     post {
         success {
-            echo 'Build and deployment successful!'
+            echo 'Build and execution successful!'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Build or execution failed!'
         }
     }
 }
