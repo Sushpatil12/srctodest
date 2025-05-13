@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clone your Git repository
-                git url: 'https://github.com/Vinayak-Rajput/Maven-Src-to-Dest'
+                git url: 'https://github.com/Sushpatil12/srctodest.git'
 
             }
         }
